@@ -1,7 +1,6 @@
-- # loseq-base-plugin
-	- logseq 插件
-- ## 功能
-- ## 待办
-- ## 演示
-- ## 鸣谢
+- # loseq-typewriter-mode
+	- loseq typewriter mode plugin
+- ## Demo
+	- ![demo](./assets/logseq-typewriter-mode.gif)
 - ## 许可证
+	- [MIT](https://choosealicense.com/licenses/mit/)
