@@ -2,5 +2,9 @@
 	- loseq typewriter mode plugin
 - ## Demo
 	- ![demo](./assets/logseq-typewriter-mode.gif)
+- ## Setting
+	- Reaction interval time
+		- Measured in milliseconds (ms), the shorter the time, the more prompt the response, but the corresponding cost is higher. Conversely, the longer the time, the more sluggish the response, but the cost is lower.
+		- ![setting](./assets/setting.jpg)
 - ## 许可证
 	- [MIT](https://choosealicense.com/licenses/mit/)
