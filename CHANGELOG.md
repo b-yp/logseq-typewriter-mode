@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/b-yp/loseq-typewriter-mode/compare/v1.0.0...v1.1.0) (2023-07-03)
+
+
+### Features
+
+* Add reaction interval time ([3140b16](https://github.com/b-yp/loseq-typewriter-mode/commit/3140b1600605a0927caf710d65ffca5624a4c50a))
+
 # 1.0.0 (2023-07-02)
 
 
