@@ -9,10 +9,18 @@ const pluginId = PL.id;
 
 const init = () => {
   const contentContainer = top?.document.querySelector("#main-content-container");
-  if (!contentContainer) return
+  let contentContainerHeight: number = 0
   const delay = logseq.settings?.['typewriterModeDealyMs'] || 100
 
-  const contentContainerHeight = contentContainer.clientHeight;
+  if (!contentContainer) return
+  contentContainerHeight = contentContainer.clientHeight;
+
+  const observer = new ResizeObserver(() => {
+    contentContainerHeight = contentContainer.clientHeight
+  })
+
+  observer.observe(contentContainer);
+
   logseq.DB.onChanged(throttle(
     () => {
       logseq.Editor.getEditingCursorPosition().then((e) => {
