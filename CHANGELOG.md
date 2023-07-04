@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/b-yp/loseq-typewriter-mode/compare/v1.1.0...v1.1.1) (2023-07-04)
+
+
+### Bug Fixes
+
+* Fixed plugin not getting the latest height after manually changing window size ([44762d5](https://github.com/b-yp/loseq-typewriter-mode/commit/44762d5baf77c61e8c3d20920b141a091f368522))
+
 # [1.1.0](https://github.com/b-yp/loseq-typewriter-mode/compare/v1.0.0...v1.1.0) (2023-07-03)
 
 
