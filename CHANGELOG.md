@@ -1,3 +1,15 @@
+# [1.2.0](https://github.com/b-yp/loseq-typewriter-mode/compare/v1.1.1...v1.2.0) (2023-07-20)
+
+
+### Bug Fixes
+
+* Distinguish between main page input and sidebar input ([aeb9f68](https://github.com/b-yp/loseq-typewriter-mode/commit/aeb9f684ab439d789a7ed9468d910ef506d96679))
+
+
+### Features
+
+* Add smooth scrolling ([5f80f06](https://github.com/b-yp/loseq-typewriter-mode/commit/5f80f06cb8280e9040d3771f547f33f8bff59c1c))
+
 ## [1.1.1](https://github.com/b-yp/loseq-typewriter-mode/compare/v1.1.0...v1.1.1) (2023-07-04)
 
 
