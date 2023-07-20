@@ -1,4 +1,4 @@
-import {  SettingSchemaDesc } from "@logseq/libs/dist/LSPlugin";
+import { SettingSchemaDesc } from "@logseq/libs/dist/LSPlugin";
 
 export const settings: SettingSchemaDesc[] = [
   {
@@ -7,5 +7,12 @@ export const settings: SettingSchemaDesc[] = [
     type: "number",
     default: 100,
     title: "Reaction interval time",
+  },
+  {
+    key: "typewriterModeIsSmooth",
+    description: "Not enabled by default, there will be noticeable jumping sensation during page scrolling, but with better performance. If enabled, page scrolling will be relatively smoother, but with worse performance.",
+    type: "boolean",
+    default: false,
+    title: "Enable smooth scrolling",
   },
 ];
