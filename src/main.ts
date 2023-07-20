@@ -2,10 +2,11 @@ import "@logseq/libs";
 
 import { logseq as PL } from "../package.json";
 
-import { throttle } from "./utils";
+import { throttle, smoothScroll } from "./utils";
 import { settings } from "./settings";
 
 const pluginId = PL.id;
+
 
 const mainContentContainerId = '#main-content-container';
 const rightSidebarId = '#right-sidebar .sidebar-item-list';
@@ -18,6 +19,7 @@ const init = () => {
   let rightSidebarHeight: number = 0
 
   const delay = logseq.settings?.['typewriterModeDealyMs'] || 100
+  const isSmooth = logseq.settings?.['typewriterModeIsSmooth'] || false
 
   if (!contentContainer || !rightSidebar) return
   contentContainerHeight = contentContainer.clientHeight;
@@ -59,9 +61,9 @@ const init = () => {
         // 当光标向下走（页面往上卷曲）的时候
         if (e.rect.top > middleHeight) {
           if (isInsideSidebar) {
-            rightSidebar.scrollTop = rightSidebar.scrollTop + (e.rect.top - middleHeight);
+            smoothScroll(rightSidebar, rightSidebar.scrollTop + (e.rect.top - middleHeight), isSmooth)
           } else {
-            contentContainer.scrollTop = contentContainer.scrollTop + (e.rect.top - middleHeight);
+            smoothScroll(contentContainer, contentContainer.scrollTop + (e.rect.top - middleHeight), isSmooth)
           }
         }
 
@@ -69,10 +71,10 @@ const init = () => {
         if (e.rect.top < middleHeight && contentContainer.scrollTop !== 0) {
           if (isInsideSidebar) {
             const rightSidebarScrollTop = rightSidebar.scrollTop - (middleHeight - e.rect.top)
-            rightSidebar.scrollTop = rightSidebarScrollTop > 0 ? rightSidebarScrollTop : 0
+            smoothScroll(rightSidebar, rightSidebarScrollTop > 0 ? rightSidebarScrollTop : 0, isSmooth)
           } else {
             const contentContainerScrollTop = contentContainer.scrollTop - (middleHeight - e.rect.top)
-            contentContainer.scrollTop = contentContainerScrollTop > 0 ? contentContainerScrollTop : 0;
+            smoothScroll(contentContainer, contentContainerScrollTop > 0 ? contentContainerScrollTop : 0, isSmooth)
           }
         }
       });

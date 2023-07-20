@@ -25,3 +25,32 @@ export const throttle = <T extends any[]>(func: (...args: T) => void, delay: num
     }
   };
 };
+
+
+/**
+ * GPT 给的平滑滚动函数
+ * @param element 滚动元素
+ * @param targetScrollTop 目标滚动位置 
+ * @param isSmooth 是否启用平滑滚动
+ * @returns 
+ */
+export const smoothScroll = (element: Element, targetScrollTop: number, isSmooth = false) => {
+  if (!isSmooth) {
+    element.scrollTop = targetScrollTop
+    return
+  }
+
+  const step = (targetScrollTop - element.scrollTop) / 10;
+  let currentScrollTop = element.scrollTop;
+
+  (function animateScroll() {
+    currentScrollTop += step;
+    element.scrollTop = currentScrollTop;
+
+    if (Math.abs(targetScrollTop - currentScrollTop) > Math.abs(step)) {
+      window.requestAnimationFrame(animateScroll);
+    } else {
+      element.scrollTop = targetScrollTop;
+    }
+  })();
+}
