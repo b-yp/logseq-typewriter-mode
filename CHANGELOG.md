@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/b-yp/loseq-typewriter-mode/compare/v1.2.0...v1.2.1) (2023-08-29)
+
+
+### Bug Fixes
+
+* Fix functional failure in version 0.9.15 ([f843778](https://github.com/b-yp/loseq-typewriter-mode/commit/f8437788307f9f1f8f23bb3bd1f48073ce63bf68))
+
 # [1.2.0](https://github.com/b-yp/loseq-typewriter-mode/compare/v1.1.1...v1.2.0) (2023-07-20)
 
 
