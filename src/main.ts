@@ -21,16 +21,17 @@ const init = () => {
   const delay = logseq.settings?.['typewriterModeDealyMs'] || 100
   const isSmooth = logseq.settings?.['typewriterModeIsSmooth'] || false
 
-  if (!contentContainer || !rightSidebar) return
-  contentContainerHeight = contentContainer.clientHeight;
-  rightSidebarHeight = rightSidebar.clientHeight
+  contentContainerHeight = contentContainer?.clientHeight || 0
+  rightSidebarHeight = rightSidebar?.clientHeight || 0
 
   const observer = new ResizeObserver(() => {
-    contentContainerHeight = contentContainer.clientHeight
-    rightSidebarHeight = rightSidebar.clientHeight
+    contentContainerHeight = contentContainer?.clientHeight || 0
+    rightSidebarHeight = rightSidebar?.clientHeight || 0
   })
 
-  observer.observe(contentContainer);
+  if (!!contentContainer) {
+    observer.observe(contentContainer);
+  }
 
   logseq.DB.onChanged(throttle(
     () => {
@@ -60,16 +61,20 @@ const init = () => {
 
         // 当光标向下走（页面往上卷曲）的时候
         if (e.rect.top > middleHeight) {
-          if (isInsideSidebar) {
+          if (isInsideSidebar && !!rightSidebar) {
             smoothScroll(rightSidebar, rightSidebar.scrollTop + (e.rect.top - middleHeight), isSmooth)
           } else {
-            smoothScroll(contentContainer, contentContainer.scrollTop + (e.rect.top - middleHeight), isSmooth)
+            if (!!contentContainer) {
+              smoothScroll(contentContainer, contentContainer.scrollTop + (e.rect.top - middleHeight), isSmooth)
+            }
           }
         }
 
+        if (!contentContainer) return
+
         // 当光标向上走（页面往下卷曲）的时候
         if (e.rect.top < middleHeight && contentContainer.scrollTop !== 0) {
-          if (isInsideSidebar) {
+          if (isInsideSidebar && !!rightSidebar) {
             const rightSidebarScrollTop = rightSidebar.scrollTop - (middleHeight - e.rect.top)
             smoothScroll(rightSidebar, rightSidebarScrollTop > 0 ? rightSidebarScrollTop : 0, isSmooth)
           } else {
