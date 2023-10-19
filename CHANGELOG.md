@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/b-yp/loseq-typewriter-mode/compare/v1.2.1...v1.2.2) (2023-10-19)
+
+
+### Bug Fixes
+
+* Fix cursor not in center & Default to enabling smooth scrolling ([aadf3aa](https://github.com/b-yp/loseq-typewriter-mode/commit/aadf3aa57ac4eea86db1fab8c4fa1f2f886c5c12))
+
 ## [1.2.1](https://github.com/b-yp/loseq-typewriter-mode/compare/v1.2.0...v1.2.1) (2023-08-29)
 
 
