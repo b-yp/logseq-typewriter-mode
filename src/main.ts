@@ -56,16 +56,18 @@ const init = () => {
       }
 
       logseq.Editor.getEditingCursorPosition().then((e) => {
-        if (!e?.rect || !e.rect.top) return
+        if (!e) return
+
         const middleHeight = contentContainerHeight / 2
+        const cursorTop = e.top + e.rect.top
 
         // 当光标向下走（页面往上卷曲）的时候
-        if (e.rect.top > middleHeight) {
+        if (cursorTop > middleHeight) {
           if (isInsideSidebar && !!rightSidebar) {
-            smoothScroll(rightSidebar, rightSidebar.scrollTop + (e.rect.top - middleHeight), isSmooth)
+            smoothScroll(rightSidebar, rightSidebar.scrollTop + (cursorTop - middleHeight), isSmooth)
           } else {
             if (!!contentContainer) {
-              smoothScroll(contentContainer, contentContainer.scrollTop + (e.rect.top - middleHeight), isSmooth)
+              smoothScroll(contentContainer, contentContainer.scrollTop + (cursorTop - middleHeight), isSmooth)
             }
           }
         }
@@ -73,12 +75,12 @@ const init = () => {
         if (!contentContainer) return
 
         // 当光标向上走（页面往下卷曲）的时候
-        if (e.rect.top < middleHeight && contentContainer.scrollTop !== 0) {
+        if (cursorTop < middleHeight && contentContainer.scrollTop !== 0) {
           if (isInsideSidebar && !!rightSidebar) {
-            const rightSidebarScrollTop = rightSidebar.scrollTop - (middleHeight - e.rect.top)
+            const rightSidebarScrollTop = rightSidebar.scrollTop - (middleHeight - cursorTop)
             smoothScroll(rightSidebar, rightSidebarScrollTop > 0 ? rightSidebarScrollTop : 0, isSmooth)
           } else {
-            const contentContainerScrollTop = contentContainer.scrollTop - (middleHeight - e.rect.top)
+            const contentContainerScrollTop = contentContainer.scrollTop - (middleHeight - cursorTop)
             smoothScroll(contentContainer, contentContainerScrollTop > 0 ? contentContainerScrollTop : 0, isSmooth)
           }
         }
