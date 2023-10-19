@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/b-yp/loseq-typewriter-mode/compare/v1.2.2...v1.2.3) (2023-10-19)
+
+
+### Bug Fixes
+
+* Fix cursor not in center ([7e1357c](https://github.com/b-yp/loseq-typewriter-mode/commit/7e1357c63e5ec2794e2f810fbaab3b4c7d5975e8))
+
 ## [1.2.2](https://github.com/b-yp/loseq-typewriter-mode/compare/v1.2.1...v1.2.2) (2023-10-19)
 
 
