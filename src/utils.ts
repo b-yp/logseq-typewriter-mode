@@ -34,7 +34,7 @@ export const throttle = <T extends any[]>(func: (...args: T) => void, delay: num
  * @param isSmooth 是否启用平滑滚动
  * @returns 
  */
-export const smoothScroll = (element: Element, targetScrollTop: number, isSmooth = false) => {
+export const smoothScroll = (element: Element, targetScrollTop: number, isSmooth = true) => {
   if (!isSmooth) {
     element.scrollTop = targetScrollTop
     return
