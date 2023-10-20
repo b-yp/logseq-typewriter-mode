@@ -24,7 +24,24 @@ const mainContentContainerId = '#main-content-container';
 const rightSidebarId = '#right-sidebar .sidebar-item-list';
 let isTypewriterMode = true;
 
-const init = () => {
+const registerUIItem = () => {
+  logseq.App.registerUIItem("toolbar", {
+    key: pluginId,
+    template: `
+      <div data-on-click="handleToggle" class="button">
+        ${isTypewriterMode ? iconOn : iconOff}
+      <div>
+    `,
+  });
+}
+
+const main = () => {
+  console.info(`#${pluginId}: MAIN`);
+
+  // 注册设置项
+  logseq.useSettingsSchema(settings);
+
+
   const contentContainer = top?.document.querySelector(mainContentContainerId);
   const rightSidebar = top?.document.querySelector(rightSidebarId);
 
@@ -46,85 +63,75 @@ const init = () => {
     observer.observe(contentContainer);
   }
 
-  logseq.DB.onChanged(throttle(
-    () => {
-      // TODO: 有没有更好的方案？
-      if (!isTypewriterMode) {
-        return
+  const scrolling = () => {
+    // TODO: 有没有更好的方案？
+    if (!isTypewriterMode) {
+      return
+    }
+
+    let selection = top?.document.getSelection();
+    let isInsideSidebar = false
+
+    if (selection && selection.anchorNode) {
+      let currentNode: Node | null | undefined = selection.anchorNode;
+      const parentElements = [];
+
+      // 遍历获取光标所在节点的所有父元素
+      while (currentNode !== top?.document.documentElement) {
+        parentElements.push(currentNode);
+        currentNode = currentNode?.parentNode;
       }
 
-      let selection = top?.document.getSelection();
-      let isInsideSidebar = false
+      // 添加根元素到父元素数组
+      parentElements.push(top?.document.documentElement);
 
-      if (selection && selection.anchorNode) {
-        let currentNode: Node | null | undefined = selection.anchorNode;
-        const parentElements = [];
+      // 判断光标是否在特定元素内
+      isInsideSidebar = parentElements.includes(top?.document.querySelector(rightSidebarId));
+    }
 
-        // 遍历获取光标所在节点的所有父元素
-        while (currentNode !== top?.document.documentElement) {
-          parentElements.push(currentNode);
-          currentNode = currentNode?.parentNode;
+    logseq.Editor.getEditingCursorPosition().then((e) => {
+      if (!e) return
+
+      const middleHeight = contentContainerHeight / 2
+      const cursorTop = e.top + e.rect.top
+
+      // 当光标向下走（页面往上卷曲）的时候
+      if (cursorTop > middleHeight) {
+        if (isInsideSidebar && !!rightSidebar) {
+          smoothScroll(rightSidebar, rightSidebar.scrollTop + (cursorTop - middleHeight), isSmooth)
+        } else {
+          if (!!contentContainer) {
+            smoothScroll(contentContainer, contentContainer.scrollTop + (cursorTop - middleHeight), isSmooth)
+          }
         }
-
-        // 添加根元素到父元素数组
-        parentElements.push(top?.document.documentElement);
-
-        // 判断光标是否在特定元素内
-        isInsideSidebar = parentElements.includes(top?.document.querySelector(rightSidebarId));
       }
 
-      logseq.Editor.getEditingCursorPosition().then((e) => {
-        if (!e) return
+      if (!contentContainer) return
 
-        const middleHeight = contentContainerHeight / 2
-        const cursorTop = e.top + e.rect.top
-
-        // 当光标向下走（页面往上卷曲）的时候
-        if (cursorTop > middleHeight) {
-          if (isInsideSidebar && !!rightSidebar) {
-            smoothScroll(rightSidebar, rightSidebar.scrollTop + (cursorTop - middleHeight), isSmooth)
-          } else {
-            if (!!contentContainer) {
-              smoothScroll(contentContainer, contentContainer.scrollTop + (cursorTop - middleHeight), isSmooth)
-            }
-          }
+      // 当光标向上走（页面往下卷曲）的时候
+      if (cursorTop < middleHeight && contentContainer.scrollTop !== 0) {
+        if (isInsideSidebar && !!rightSidebar) {
+          const rightSidebarScrollTop = rightSidebar.scrollTop - (middleHeight - cursorTop)
+          smoothScroll(rightSidebar, rightSidebarScrollTop > 0 ? rightSidebarScrollTop : 0, isSmooth)
+        } else {
+          const contentContainerScrollTop = contentContainer.scrollTop - (middleHeight - cursorTop)
+          smoothScroll(contentContainer, contentContainerScrollTop > 0 ? contentContainerScrollTop : 0, isSmooth)
         }
+      }
+    });
+  }
 
-        if (!contentContainer) return
+  const scrollingWithKey = (event: any) => {
+    if (event.code === 'ArrowUp' || event.code === 'ArrowDown') {
+      scrolling()
+    }
+  }
 
-        // 当光标向上走（页面往下卷曲）的时候
-        if (cursorTop < middleHeight && contentContainer.scrollTop !== 0) {
-          if (isInsideSidebar && !!rightSidebar) {
-            const rightSidebarScrollTop = rightSidebar.scrollTop - (middleHeight - cursorTop)
-            smoothScroll(rightSidebar, rightSidebarScrollTop > 0 ? rightSidebarScrollTop : 0, isSmooth)
-          } else {
-            const contentContainerScrollTop = contentContainer.scrollTop - (middleHeight - cursorTop)
-            smoothScroll(contentContainer, contentContainerScrollTop > 0 ? contentContainerScrollTop : 0, isSmooth)
-          }
-        }
-      });
-    }, delay
-  ));
-}
+  if (isTypewriterMode) {
+    logseq.DB.onChanged(throttle(scrolling, delay));
 
-const registerUIItem = () => {
-  logseq.App.registerUIItem("toolbar", {
-    key: pluginId,
-    template: `
-      <div data-on-click="handleToggle" class="button">
-        ${isTypewriterMode ? iconOn : iconOff}
-      <div>
-    `,
-  });
-}
-
-const main = () => {
-  console.info(`#${pluginId}: MAIN`);
-
-  // 注册设置项
-  logseq.useSettingsSchema(settings);
-
-  init()
+    top!.document.addEventListener('keydown', scrollingWithKey);
+  }
 
   registerUIItem()
 
@@ -133,8 +140,13 @@ const main = () => {
       handleToggle() {
         isTypewriterMode = !isTypewriterMode
 
-        logseq.UI.showMsg(isTypewriterMode ? "Typewriter mode is on" : "Typewriter mode is off")
+        if (isTypewriterMode) {
+          top!.document.addEventListener('keydown', scrollingWithKey);
+        } else {
+          top!.document.removeEventListener('keydown', scrollingWithKey);
+        }
 
+        logseq.UI.showMsg(isTypewriterMode ? "Typewriter mode is on" : "Typewriter mode is off")
         registerUIItem()
       }
     }
