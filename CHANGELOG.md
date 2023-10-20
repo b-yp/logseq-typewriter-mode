@@ -1,3 +1,11 @@
+# [1.3.0](https://github.com/b-yp/logseq-typewriter-mode/compare/v1.2.3...v1.3.0) (2023-10-20)
+
+
+### Features
+
+* Add switch & Enable smooth scrolling by default ([4fae17f](https://github.com/b-yp/logseq-typewriter-mode/commit/4fae17f820f2b1f9c7e4b1f7588d327b00be100f))
+* Support direction key triggering ([ec3b4ce](https://github.com/b-yp/logseq-typewriter-mode/commit/ec3b4ce62c27fa0f6c68f78a5cd8875a3721298a))
+
 ## [1.2.3](https://github.com/b-yp/loseq-typewriter-mode/compare/v1.2.2...v1.2.3) (2023-10-19)
 
 
