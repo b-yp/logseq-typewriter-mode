@@ -64,8 +64,10 @@ const main = () => {
   }
 
   const scrolling = () => {
+    const popup = top?.document.querySelector('.lsp-ui-float-container.visible')
+
     // TODO: 有没有更好的方案？
-    if (!isTypewriterMode) {
+    if (!isTypewriterMode || !!popup) {
       return
     }
 
