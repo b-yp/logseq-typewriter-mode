@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/b-yp/logseq-typewriter-mode/compare/v1.3.0...v1.3.1) (2023-11-17)
+
+
+### Bug Fixes
+
+* Fix the issue of software freezing when calling the getEditingCursorPosition API while the popup is present. ([1dace46](https://github.com/b-yp/logseq-typewriter-mode/commit/1dace46120155b3366f2e7808a7d62f510cb2c49))
+
 # [1.3.0](https://github.com/b-yp/logseq-typewriter-mode/compare/v1.2.3...v1.3.0) (2023-10-20)
 
 
